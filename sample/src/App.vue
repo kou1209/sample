@@ -1,22 +1,36 @@
 <template>
-  <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <router-view></router-view>
-    </v-content>
-  </v-app>
+  <div>
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/product">商品情報</router-link>
+    </nav>
+    <!-- ここにパスと一致したコンポーネントが埋め込まれる -->
+    <router-view />
+  </div>
 </template>
+<style>
+/* ナビゲーション */
+nav {
+  display: flex;
+  align-items: center;
+  background: #222;
+}
+nav a {
+  display: block;
+  padding: 0.5em;
+  color: #eee;
+  line-height: 1em;
+  text-decoration: none;
+}
+/* アクティブなリンク */
+.router-link-active {
+  background: palevioletred;
+}
+</style>
+<script>
+export default {
+  components: {
+    // MyComponent: () => import("@/components/MyComponent")
+  }
+};
+</script>

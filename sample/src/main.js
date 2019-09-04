@@ -1,14 +1,9 @@
+import router from "./router.js";
 import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import vuetify from "./plugins/vuetify";
-
-Vue.config.productionTip = false;
+import App from "./App";
 
 new Vue({
-  router,
-  store,
-  vuetify,
+  el: "#app",
+  router, // アプリケーションに登録
   render: h => h(App)
-}).$mount("#app");
+});

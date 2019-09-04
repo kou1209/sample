@@ -1,28 +1,74 @@
 import Vue from "vue";
-import Router from "vue-router";
-import Home from "./views/Home.vue";
-import Product from "./views/Product.vue";
+import VueRouter from "vue-router";
 
-Vue.use(Router);
+import Home from "@/views/Home";
+import ProductList from "@/views/ProductList"; // 商品一覧
+import Product from "@/views/Product"; // 商品情報（親ルート）
+// Productの子ルートたち
+import ProductHome from "@/views/Product/Home";
+import ProductReview from "@/views/Product/Review";
+import ProductReviewDetail from "@/views/Product/ReviewDetail";
 
-export default new Router({
-  mode: "history",
+Vue.use(VueRouter);
+
+const About = () => import("@/views/About");
+const router = new VueRouter({
   routes: [
     {
       path: "/",
-      name: "home",
       component: Home
     },
     {
       path: "/about",
-      name: "about",
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+      component: About
+      // 次のように書くこともできる
+      // component: () => import('@/views/About')
     },
+    // 商品一覧ページ
     {
       path: "/product",
-      name: "product",
-      component: Product
+      component: ProductList
+    },
+    // 商品情報ページ
+    {
+      path: "/product/:id",
+      component: Product,
+      props: route => ({
+        id: Number(route.params.id)
+      }),
+      children: [
+        // 商品詳細（デフォルトルート）
+        {
+          name: "product-home",
+          path: "",
+          component: ProductHome
+        },
+        // 商品のレビュー一覧
+        {
+          name: "product-review",
+          path: "review",
+          component: ProductReview
+        },
+        // 商品のレビュー詳細
+        {
+          name: "review-detail",
+          path: "review/:rid", // 親ルートとかぶらないパラメータを指定
+          component: ProductReviewDetail,
+          props: route => ({
+            rid: Number(route.params.rid)
+          })
+        }
+      ]
     }
   ]
+});
+export default router;
+
+router.beforeEach((to, from, next) => {
+  // store.commit("view/start");
+  next();
+});
+// ルーターナビゲーションの後にフック
+router.afterEach(() => {
+  // store.commit("view/end");
 });
